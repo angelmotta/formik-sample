@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { useFormik } from "formik";
+import * as Yup from "yup";
+
 // import "./styles.css";
 
 const validate = (values) => {
@@ -35,7 +37,18 @@ const SignupForm = () => {
             lastName: "",
             email: "",
         },
-        validate,
+        // validate,
+        validationSchema: Yup.object({
+            firstName: Yup.string()
+                .max(20, "Must be 20 characters or less")
+                .required("Required"),
+            lastName: Yup.string()
+                .max(20, "Must be 20 characters or less")
+                .required("Required"),
+            email: Yup.string()
+                .email("Invalid email address")
+                .required("Required"),
+        }),
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2));
         },
@@ -52,7 +65,7 @@ const SignupForm = () => {
                 value={formik.values.firstName}
             />
             {formik.touched.firstName && formik.errors.firstName ? (
-                <div>{formik.errors.firstName}</div>
+                <div className="error">{formik.errors.firstName}</div>
             ) : null}
 
             <label htmlFor="lastName">Last Name</label>
@@ -65,7 +78,7 @@ const SignupForm = () => {
                 value={formik.values.lastName}
             />
             {formik.touched.lastName && formik.errors.lastName ? (
-                <div>{formik.errors.lastName}</div>
+                <div className="error">{formik.errors.lastName}</div>
             ) : null}
 
             <label htmlFor="email">Email Address</label>
@@ -78,7 +91,7 @@ const SignupForm = () => {
                 value={formik.values.email}
             />
             {formik.touched.email && formik.errors.email ? (
-                <div>{formik.errors.email}</div>
+                <div className="error">{formik.errors.email}</div>
             ) : null}
 
             <button type="submit">Submit</button>
